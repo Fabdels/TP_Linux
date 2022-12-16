@@ -35,3 +35,21 @@ Certains fichiers permettent d'accéder à des périphériques de communication 
 1.4.3
 Si on essaie d'exécuter l'exécutable généré, le shell revoie une erreure:
 "cannot execute binary file: Exec format error" -> le format de cet executable ne convient pas à cet os
+
+
+TP2:
+On peut utiliser mmap pour accéder directement à un registre et le modifier en bare-metal. Cependant cette méthode nécessite de connaitre l'adresse mémoire hard. Cette adresse dépendant du device, cette méthode entraine des difficultés de portage.
+
+2.2
+sudo insmod hello.ko
+sudo dmesg
+  -> [2100.213443] Hello world!
+ sudo lsmod | grep hello
+  -> hello  16384 0 *rien*
+sudo rmmod
+  ->  [2199.213443] Bye Bye... (pas besoin de dmesg car le message est une KERN_ALERT)
+  
+  -> /proc/device -> major = 100 minor = 0 disponible!
+sudo mknod /dev/le_driver_TP u 100 0
+
+
