@@ -52,5 +52,7 @@ sudo rmmod
   -> /proc/device -> major = 100 minor = 0 disponible!
 sudo mknod /dev/le_driver_TP u 100 0
 
+2.3
+attention: l'export n'est valide que dans l'instance du shell ou il a été lancé et disparait au reboot
 whereis arm-linux-gnueabihf-gcc
   -> arm-linux-gnueabihf-gcc /usr/bin/arm-linux-gnueabihf-gcc
