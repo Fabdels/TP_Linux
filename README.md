@@ -52,4 +52,5 @@ sudo rmmod
   -> /proc/device -> major = 100 minor = 0 disponible!
 sudo mknod /dev/le_driver_TP u 100 0
 
-
+whereis arm-linux-gnueabihf-gcc
+  -> arm-linux-gnueabihf-gcc /usr/bin/arm-linux-gnueabihf-gcc
