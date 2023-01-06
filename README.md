@@ -66,8 +66,9 @@ insmod le_module param=2
   
   -> /proc/device -> major = 100 minor = 0 disponible!
 sudo mknod /dev/le_driver_TP u 100 0
-
-
+on vérifie ensuite la création:
+ls -l /dev/le_driver_TP
+  -> crw-r--r-- 1 root root 100, 0 Jan  6 10:47 le_driver_TP
 
 
 
