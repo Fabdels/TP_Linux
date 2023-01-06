@@ -1,5 +1,8 @@
 # TP_Linux
 
+
+TP1 :
+
 df -h
 /dev/root       3.0G  1.3G  1.5G  47% /
 devtmpfs        375M     0  375M   0% /dev
@@ -30,15 +33,20 @@ bluetooth    fpga_manager    i2c-adapter  mdio_bus  net       scsi_device  spide
 devcoredump  fpga_region     i2c-dev      mem       pps       scsi_disk    tty
 dma          gpio            ieee80211    misc      ptp       scsi_host    udc
 
-Certains fichiers permettent d'accéder à des périphériques de communication du microcontrolleur: dma, gpio, i2c-dev... et d'autres permettent d'accéder à la partie fpga du cyclone Soc.
+Certains fichiers permettent d'accéder à des périphériques de communication du microcontrôleur: dma, gpio, i2c-dev... et d'autres permettent d'accéder à la partie fpga du cyclone Soc.
 
 1.4.3
-Si on essaie d'exécuter l'exécutable généré, le shell revoie une erreure:
+Si on essaie d'exécuter l'exécutable généré, le shell revoie une erreur:
 "cannot execute binary file: Exec format error" -> le format de cet executable ne convient pas à cet os
 
 
-TP2:
-On peut utiliser mmap pour accéder directement à un registre et le modifier en bare-metal. Cependant cette méthode nécessite de connaitre l'adresse mémoire hard. Cette adresse dépendant du device, cette méthode entraine des difficultés de portage.
+
+
+
+TP2 :
+
+
+On peut utiliser mmap pour accéder directement à un registre et le modifier en bare-metal. Cependant cette méthode nécessite de connaître l'adresse mémoire hard. Cette adresse dépendant du device, cette méthode entraine des difficultés de portage.
 
 2.2
 sudo insmod hello.ko
@@ -56,3 +64,61 @@ sudo mknod /dev/le_driver_TP u 100 0
 attention: l'export n'est valide que dans l'instance du shell ou il a été lancé et disparait au reboot
 whereis arm-linux-gnueabihf-gcc
   -> arm-linux-gnueabihf-gcc /usr/bin/arm-linux-gnueabihf-gcc
+
+
+
+
+
+TP3 :
+
+On remplace 
+
+ledr: gpio@0x100003000 {
+compatible = "altr,pio-16.1", "altr,pio-1.0";
+reg = <0x00000001 0x00003000 0x00000010>;
+clocks = <&clk_50>;
+
+par 
+
+ledr: ensea {
+compatible = "dev,ensea";
+reg = <0x00000001 0x00003000 0x00000010>;
+clocks = <&clk_50>;
+
+
+Le nouveau device tree...
+
+
+3.1
+
+Probe -> leds_probe
+Appelée dès que le noyau trouve un nouveau device compatible avec notre driver.
+
+Cette fonction :
+Allume les LED (en accèdant au registre 0 dans le module ensea LEDs)
+Initialise le device (crée un character file dans l'espace utilisateur)
+
+
+Read -> ssize_t leds_read
+Appelée dès qu'une opération de lecture a lieu sur un des character files.
+
+Cette fonction :
+Donne à l'utilisateur la valeur de la LED
+(Si la copie de la valeur sur l'espace utilisateur échoue, affiche un message d'erreur)
+
+Write -> ssize_t leds_write
+Appelée dès qu'une opération d'écriture a lieu sur un des character files.
+
+Cette fonction :
+Récupère la nouvelle valeur de la LED (Les premiers octets des données fournies)
+(Si la copie de la valeur depuis l'espace utilisateur échoue, affiche un message d'erreur)
+
+
+Remove -> leds_remove
+Appelée dès qu'un device utilisant ce driver est supprimé.
+(Egalement appelée pour chaque device géré par notre driver est supprimé
+du système (avec la commande rmmod)
+
+Cette fonction :
+Eteint les LEDs
+Supprime le character file de /dev
