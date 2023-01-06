@@ -86,7 +86,7 @@ reg = <0x00000001 0x00003000 0x00000010>;
 clocks = <&clk_50>;
 
 
-Le nouveau device tree...
+Dans le nouveau device tree, dans bridge@0xc000000, on trouve le module ensea
 
 
 3.1
@@ -116,9 +116,25 @@ Récupère la nouvelle valeur de la LED (Les premiers octets des données fourni
 
 Remove -> leds_remove
 Appelée dès qu'un device utilisant ce driver est supprimé.
-(Egalement appelée pour chaque device géré par notre driver est supprimé
+(Egalement appelée pour chaque device géré par notre driver lorsque celui-ci est supprimé
 du système (avec la commande rmmod)
 
 Cette fonction :
 Eteint les LEDs
 Supprime le character file de /dev
+
+
+
+
+
+Compilation impossible dans le dossier partagé.
+La compilation est à faire avec un makefile et les bons flags à ajouter.
+
+
+3.2
+
+
+
+
+
+
