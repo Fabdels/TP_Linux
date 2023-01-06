@@ -56,9 +56,21 @@ sudo dmesg
   -> hello  16384 0 *rien*
 sudo rmmod
   ->  [2199.213443] Bye Bye... (pas besoin de dmesg car le message est une KERN_ALERT)
+
+
+- utilisation de paramètres au chargement du module
+
+Pour définir la valeur d'un paramètre au chargement du module, il suffit d'écrire quelque chose de la forme :
+
+insmod le_module param=2
   
   -> /proc/device -> major = 100 minor = 0 disponible!
 sudo mknod /dev/le_driver_TP u 100 0
+
+
+
+
+
 
 2.3
 attention: l'export n'est valide que dans l'instance du shell ou il a été lancé et disparait au reboot
@@ -112,12 +124,12 @@ Appelée dès qu'une opération d'écriture a lieu sur un des character files.
 Cette fonction :
 Récupère la nouvelle valeur de la LED (Les premiers octets des données fournies)
 (Si la copie de la valeur depuis l'espace utilisateur échoue, affiche un message d'erreur)
-
+Mets les LED 
 
 Remove -> leds_remove
 Appelée dès qu'un device utilisant ce driver est supprimé.
 (Egalement appelée pour chaque device géré par notre driver lorsque celui-ci est supprimé
-du système (avec la commande rmmod)
+du système (avec la commande rmmod))
 
 Cette fonction :
 Eteint les LEDs
